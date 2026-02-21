@@ -495,7 +495,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     }
 
     function submitForm() {
-      // Build a real HTML form so the GHL tracking script can intercept it
+      // Build a hidden form with all wizard data
       var form = document.createElement('form');
       form.method = 'POST';
       form.action = '/thank-you.html';
@@ -521,7 +521,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       }
 
       document.body.appendChild(form);
-      form.submit();
+
+      // Fire submit event so GHL tracking script captures the data
+      form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+
+      // Redirect after a short delay (gives GHL time to send the data)
+      setTimeout(function() {
+        window.location.href = '/thank-you.html';
+      }, 500);
     }
   </script>
 </body>
