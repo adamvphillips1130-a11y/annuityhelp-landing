@@ -12,6 +12,10 @@
   'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
   })(window,document,'script','dataLayer','GTM-PC3FSRRL');</script>
   <!-- End Google Tag Manager -->
+  <!-- GHL External Tracking Script -->
+  <script src="https://link.annuityoperatorcrm.com/js/external-tracking.js"
+    data-tracking-id="tk_b5f9793dc0fa411e93a4540700b99d74"></script>
+  <!-- End GHL External Tracking Script -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -491,7 +495,33 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     }
 
     function submitForm() {
-      window.location.href = '/thank-you.html';
+      // Build a real HTML form so the GHL tracking script can intercept it
+      var form = document.createElement('form');
+      form.method = 'POST';
+      form.action = '/thank-you.html';
+      form.style.display = 'none';
+
+      var fields = {
+        first_name: document.getElementById('firstName').value.trim(),
+        last_name: document.getElementById('lastName').value.trim(),
+        name: document.getElementById('firstName').value.trim() + ' ' + document.getElementById('lastName').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        zip: document.getElementById('zipCode').value.trim(),
+        birth_year: document.getElementById('birthYear').value,
+        retirement_assets: selectedSavings
+      };
+
+      for (var key in fields) {
+        var input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key;
+        input.value = fields[key];
+        form.appendChild(input);
+      }
+
+      document.body.appendChild(form);
+      form.submit();
     }
   </script>
 </body>
